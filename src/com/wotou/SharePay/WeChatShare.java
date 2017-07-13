@@ -3,6 +3,7 @@ package com.wotou.SharePay;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.mm.sdk.platformtools.BackwardSupportUtil.BitmapFactory;
@@ -39,10 +40,10 @@ public class WeChatShare extends UnityPlayerActivity
 	public void shareToWeChat(String title, String url, String describe)
 	{
 		WXWebpageObject webpage = new WXWebpageObject();
-		webpage.webpageUrl = "http://wotou.pw";
+		webpage.webpageUrl = url;
 		WXMediaMessage msg = new WXMediaMessage(webpage);
-		msg.title = "sharePay";
-		msg.description = "readme";
+		msg.title = title;
+		msg.description = describe;
 		
 		//Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.send_music_thumb);
 		//Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
@@ -56,6 +57,20 @@ public class WeChatShare extends UnityPlayerActivity
 		api.sendReq(req);
 		
 		finish();
+	}
+	
+	public void WXPay(String appid,String partnerid, String prepayid, String timeStamp, String nonceStr, String paysign)
+	{
+		api = WXAPIFactory.createWXAPI(this, appid, true);
+		PayReq req = new PayReq();
+		req.appId = appid;
+		req.partnerId = partnerid;
+		req.prepayId = prepayid;
+		req.timeStamp = timeStamp;
+		req.nonceStr = nonceStr;
+		req.packageValue = "sing= WXPay";
+		req.sign = paysign;
+		api.sendReq(req);
 	}
 	
 	private String buildTransaction(final String type) 
