@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class WeChatShare extends UnityPlayerActivity
 {
@@ -24,14 +25,9 @@ public class WeChatShare extends UnityPlayerActivity
 	public void onCreate(Bundle savedInstanceState) 
 	{
 	    super.onCreate(savedInstanceState);
+	    
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -92,6 +88,11 @@ public class WeChatShare extends UnityPlayerActivity
 		req.packageValue = "sing= WXPay";
 		req.sign = paysign;
 		api.sendReq(req);
+	}
+	
+	public void SayHello(String say)
+	{
+		Toast.makeText(this, "Say:" + say, Toast.LENGTH_LONG).show();
 	}
 	
 	private String buildTransaction(final String type) 
