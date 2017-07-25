@@ -1,18 +1,16 @@
 package com.wotou.SharePay;
 
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXAppExtendObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXTextObject;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.tencent.mm.sdk.platformtools.BackwardSupportUtil.BitmapFactory;
 import com.unity3d.player.UnityPlayerActivity;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 public class WeChatShare extends UnityPlayerActivity
@@ -28,18 +26,6 @@ public class WeChatShare extends UnityPlayerActivity
 	    
 	}
 	
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 	
 	public String initappid(String callbackGameObject,String appid, int platfrom)
 	{
@@ -73,9 +59,49 @@ public class WeChatShare extends UnityPlayerActivity
 		req.scene = SendMessageToWX.Req.WXSceneSession;
 		api.sendReq(req);
 		
-		finish();
+		//finish();
 	}
 	
+	public void SendAppToWX(String title, String describe)
+	{
+		final WXAppExtendObject appdata = new WXAppExtendObject();
+		appdata.extInfo = "this is ext info";
+		final WXMediaMessage msg = new WXMediaMessage();
+		msg.title = title;
+		msg.description = describe;
+		msg.mediaObject = appdata;
+		
+		SendMessageToWX.Req req = new SendMessageToWX.Req();
+		req.transaction = buildTransaction("appdata");
+		req.message = msg;
+		req.scene = SendMessageToWX.Req.WXSceneSession;
+		api.sendReq(req);
+		
+		//finish();
+	}
+	
+	public void SendTextToWX(String text)
+	{
+		if (text == null || text.length() == 0) {
+			return;
+		}
+		
+		WXTextObject textObj = new WXTextObject();
+		textObj.text = text;
+
+		WXMediaMessage msg = new WXMediaMessage();
+		msg.mediaObject = textObj;
+
+		msg.description = text;
+
+		SendMessageToWX.Req req = new SendMessageToWX.Req();
+		req.transaction = buildTransaction("text");
+		req.message = msg;
+		req.scene = SendMessageToWX.Req.WXSceneSession;
+
+		api.sendReq(req);
+		finish();
+	}
 	public void WXPay(String appid,String partnerid, String prepayid, String timeStamp, String nonceStr, String paysign)
 	{
 		api = WXAPIFactory.createWXAPI(this, appid, true);
