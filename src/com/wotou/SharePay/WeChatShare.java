@@ -100,7 +100,7 @@ public class WeChatShare extends UnityPlayerActivity
 		req.scene = SendMessageToWX.Req.WXSceneSession;
 
 		api.sendReq(req);
-		finish();
+//		finish();
 	}
 	public void WXPay(String appid,String partnerid, String prepayid, String timeStamp, String nonceStr, String paysign)
 	{
