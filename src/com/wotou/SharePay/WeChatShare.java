@@ -8,15 +8,20 @@ import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.mm.sdk.platformtools.Util;
 import com.unity3d.player.UnityPlayerActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.Toast;
 
 public class WeChatShare extends UnityPlayerActivity
 {
 
-	private String callbackGameobject;
+	private static final int THUMB_SIZE = 150;
+	
+	public static String callbackGameobject;
 	private String WxAppID;
 	private IWXAPI api;
 	
@@ -48,10 +53,10 @@ public class WeChatShare extends UnityPlayerActivity
 		msg.title = title;
 		msg.description = describe;
 		
-		//Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.send_music_thumb);
-		//Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
-		//bmp.recycle();
-		//msg.thumbData = Util.bmpToByteArray(thumbBmp, true);
+		Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.url_icon);
+		Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
+		bmp.recycle();
+		msg.thumbData = Util.bmpToByteArray(thumbBmp, true);
 		
 		SendMessageToWX.Req req = new SendMessageToWX.Req();
 		req.transaction = buildTransaction("webpage");

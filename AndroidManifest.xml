@@ -37,8 +37,7 @@
 		<!-- 微信分享回调 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:theme="@android:style/Theme.NoDisplay"
-            android:launchMode="singleTop"
+            android:label="@string/app_name"
             android:exported="true" />
     </application>
 

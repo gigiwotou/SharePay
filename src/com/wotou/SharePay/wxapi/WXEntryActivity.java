@@ -7,8 +7,10 @@ import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX;
 import com.tencent.mm.opensdk.modelmsg.WXAppExtendObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.unity3d.player.UnityPlayer;
 import com.wotou.SharePay.R;
 import com.wotou.SharePay.SendToWXActivity;
+import com.wotou.SharePay.WeChatShare;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,7 +22,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 	public void onCreate(Bundle savedInstanceState) 
 	{
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.activity_main);
+	    //setContentView(R.layout.activity_main);
 	}
 	
 	// 微信发送请求到第三方应用时，会回调到该方法
@@ -47,7 +49,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 		// TODO Auto-generated method stub
 		int result = 0;
 		
-		Toast.makeText(this, "baseresp.getType = " + resp.getType(), Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "openid = " + resp.openId, Toast.LENGTH_SHORT).show();
 		
 		switch (resp.errCode) {
 		case BaseResp.ErrCode.ERR_OK:
@@ -68,6 +70,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 		}
 		
 		Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+
+		UnityPlayer.UnitySendMessage(WeChatShare.callbackGameobject,"OnError",Integer.toString(result));
 	}
 
 	private void goToGetMsg() 
