@@ -4,12 +4,11 @@ import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX;
-import com.tencent.mm.opensdk.modelmsg.WXAppExtendObject;
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.unity3d.player.UnityPlayer;
 import com.wotou.SharePay.R;
-import com.wotou.SharePay.SendToWXActivity;
 import com.wotou.SharePay.WeChatShare;
 
 import android.app.Activity;
@@ -19,10 +18,21 @@ import android.widget.Toast;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
+	private IWXAPI api;
+	
 	public void onCreate(Bundle savedInstanceState) 
 	{
 	    super.onCreate(savedInstanceState);
 	    //setContentView(R.layout.activity_main);
+	    api = WXAPIFactory.createWXAPI(this, WeChatShare.WxAppID);
+        api.handleIntent(getIntent(), this);
+	}
+	
+	@Override  
+    protected void onNewIntent(Intent intent) {  
+        super.onNewIntent(intent);  
+        setIntent(intent);  
+        api.handleIntent(intent, this);
 	}
 	
 	// 微信发送请求到第三方应用时，会回调到该方法
@@ -49,7 +59,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 		// TODO Auto-generated method stub
 		int result = 0;
 		
-		Toast.makeText(this, "openid = " + resp.openId, Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, "openid = " + resp.openId, Toast.LENGTH_SHORT).show();
 		
 		switch (resp.errCode) {
 		case BaseResp.ErrCode.ERR_OK:
@@ -69,9 +79,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 			break;
 		}
 		
-		Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+		Toast.makeText(this, R.string.share_ok, Toast.LENGTH_SHORT).show();
+		UnityPlayer.UnitySendMessage(WeChatShare.callbackGameobject,"OnError",Integer.toString(resp.errCode));
 
-		UnityPlayer.UnitySendMessage(WeChatShare.callbackGameobject,"OnError",Integer.toString(result));
+		finish();
 	}
 
 	private void goToGetMsg() 

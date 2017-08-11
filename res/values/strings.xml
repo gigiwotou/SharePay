@@ -149,4 +149,5 @@
     <string name="target_scene_session">会话</string>
     <string name="target_scene_timeline">朋友圈</string>
     <string name="target_scene_favorite">收藏</string>
+    <string name="share_ok">分享成功</string>
 </resources>

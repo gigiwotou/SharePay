@@ -22,7 +22,7 @@ public class WeChatShare extends UnityPlayerActivity
 	private static final int THUMB_SIZE = 150;
 	
 	public static String callbackGameobject;
-	private String WxAppID;
+	public static String WxAppID;
 	private IWXAPI api;
 	
 	public void onCreate(Bundle savedInstanceState) 
@@ -82,7 +82,7 @@ public class WeChatShare extends UnityPlayerActivity
 		req.scene = SendMessageToWX.Req.WXSceneSession;
 		api.sendReq(req);
 		
-		//finish();
+		finish();
 	}
 	
 	public void SendTextToWX(String text)
